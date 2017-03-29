@@ -12,6 +12,10 @@
 		DE03AFA71E85227C001EC72B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFA51E85227C001EC72B /* Main.storyboard */; };
 		DE03AFA91E85227C001EC72B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFA81E85227C001EC72B /* Assets.xcassets */; };
 		DE03AFAC1E85227C001EC72B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFAA1E85227C001EC72B /* LaunchScreen.storyboard */; };
+		DE03AFB41E852297001EC72B /* OpenGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE03AFB31E852297001EC72B /* OpenGLView.swift */; };
+		DE03AFB61E8536D8001EC72B /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFB51E8536D8001EC72B /* SimpleVertex.glsl */; };
+		DE03AFB81E8537F1001EC72B /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFB71E8537F1001EC72B /* SimpleFragment.glsl */; };
+		DE03AFBA1E853938001EC72B /* ShaderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE03AFB91E853938001EC72B /* ShaderHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,10 @@
 		DE03AFA81E85227C001EC72B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE03AFAB1E85227C001EC72B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE03AFAD1E85227C001EC72B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE03AFB31E852297001EC72B /* OpenGLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenGLView.swift; sourceTree = "<group>"; };
+		DE03AFB51E8536D8001EC72B /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
+		DE03AFB71E8537F1001EC72B /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
+		DE03AFB91E853938001EC72B /* ShaderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShaderHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +64,10 @@
 			children = (
 				DE03AFA11E85227C001EC72B /* AppDelegate.swift */,
 				DE03AFA31E85227C001EC72B /* ViewController.swift */,
+				DE03AFB31E852297001EC72B /* OpenGLView.swift */,
+				DE03AFB51E8536D8001EC72B /* SimpleVertex.glsl */,
+				DE03AFB71E8537F1001EC72B /* SimpleFragment.glsl */,
+				DE03AFB91E853938001EC72B /* ShaderHelper.swift */,
 				DE03AFA51E85227C001EC72B /* Main.storyboard */,
 				DE03AFA81E85227C001EC72B /* Assets.xcassets */,
 				DE03AFAA1E85227C001EC72B /* LaunchScreen.storyboard */,
@@ -124,8 +136,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE03AFAC1E85227C001EC72B /* LaunchScreen.storyboard in Resources */,
+				DE03AFB61E8536D8001EC72B /* SimpleVertex.glsl in Resources */,
 				DE03AFA91E85227C001EC72B /* Assets.xcassets in Resources */,
 				DE03AFA71E85227C001EC72B /* Main.storyboard in Resources */,
+				DE03AFB81E8537F1001EC72B /* SimpleFragment.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +150,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE03AFBA1E853938001EC72B /* ShaderHelper.swift in Sources */,
 				DE03AFA41E85227C001EC72B /* ViewController.swift in Sources */,
+				DE03AFB41E852297001EC72B /* OpenGLView.swift in Sources */,
 				DE03AFA21E85227C001EC72B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,6 +279,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spaceo.hitendra.OpenGLRay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -275,6 +292,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.spaceo.hitendra.OpenGLRay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -297,6 +315,7 @@
 				DE03AFB21E85227C001EC72B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
