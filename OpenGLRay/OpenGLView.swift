@@ -29,6 +29,7 @@ struct OpenGLViewVertexConstants {
     }
 }
 
+let z: GLfloat = 0
 class OpenGLView: UIView {
 
     struct Vertex {
@@ -40,11 +41,10 @@ class OpenGLView: UIView {
     
     lazy var vertices : [Vertex] = {
         
-        
-        let vertex1 : Vertex = Vertex(position: (1,-1,1), color: (1,0,0,1))
-        let vertex2 : Vertex = Vertex(position: (1,1,1), color: (0,1,0,1))
-        let vertex3 : Vertex = Vertex(position: (-1,1,1), color: (0,0,1,1))
-        let vertex4 : Vertex = Vertex(position: (-1,-1,1), color: (0,0,0,1))
+        let vertex1 : Vertex = Vertex(position: (1,-1,z), color: (1,0,0,1))
+        let vertex2 : Vertex = Vertex(position: (1,1,z), color: (0,1,0,1))
+        let vertex3 : Vertex = Vertex(position: (-1,1,z), color: (0,0,1,1))
+        let vertex4 : Vertex = Vertex(position: (-1,-1,z), color: (0,0,0,1))
         
         return [vertex1,vertex2,vertex3,vertex4]
     }()
@@ -61,12 +61,22 @@ class OpenGLView: UIView {
     var context: EAGLContext!
     var colorRenderBuffer : GLuint = 0;
     
-    var positionSlot: GLuint = 1
-    var colorSlot: GLuint = 2
+    var positionSlot: GLuint = 0
+    var colorSlot: GLuint = 0
+    
+    var projectionUniform: GLuint = 0
+    var modelViewUniform: GLuint = 0
+    var currentRotation: GLfloat = 0
     
     var vertexBuffer : GLuint = 0
     var indexBuffer: GLuint = 0;
     var framerBuffer : GLuint = 0
+    
+    func setupDisplayLink() {
+        let displayLink = CADisplayLink.init(target: self, selector: #selector(OpenGLView.render(displayLink:)))
+        displayLink.add(to: RunLoop.current, forMode: .defaultRunLoopMode)
+    }
+
     
     //MARK:- INIT
     override init(frame: CGRect) {
@@ -77,7 +87,7 @@ class OpenGLView: UIView {
         self.setupFrameBuffer()
         self.compileShaders()
         self.setupVBOs()
-        self.render()
+        self.setupDisplayLink()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -128,9 +138,11 @@ class OpenGLView: UIView {
 
     
     func compileShaders(){
-        let (pSlot, cSlot) = ShaderHelper.compileShaders()
-        self.positionSlot = pSlot;
-        self.colorSlot = cSlot;
+        let (positionSlot, colorSlot, projectionUniform, modelViewUniform) = ShaderHelper.compileShaders()
+        self.positionSlot = positionSlot;
+        self.colorSlot = colorSlot;
+        self.projectionUniform = projectionUniform
+        self.modelViewUniform = modelViewUniform;
     }
     
     func setupVBOs(){
@@ -144,15 +156,35 @@ class OpenGLView: UIView {
     }
 
     //render
-    func render(){
+    func render(displayLink : CADisplayLink){
+        
+        self.currentRotation += GLfloat(displayLink.duration * 90.10);
+        
+        //
         glClearColor(0, 100.0/255.0, 50.0/255.0, 1.0)
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
         
+        //
+        let projection : CC3GLMatrix = CC3GLMatrix.matrix() as! CC3GLMatrix
+        let height : Float = Float( 4 * (self.frame.size.height/self.frame.size.width) );
+        projection.populate(fromFrustumLeft: -2, andRight: 2, andBottom: -height/2, andTop: height/2, andNear: 4, andFar: 10)
+        glUniformMatrix4fv(GLint(self.projectionUniform), 1, GLboolean(GL_FALSE), projection.glMatrix)
+        
+        let modelView = CC3GLMatrix.matrix() as! CC3GLMatrix;
+        modelView.populate(fromTranslation: CC3VectorMake(GLfloat(sin(CACurrentMediaTime())), GLfloat(cos(CACurrentMediaTime())), -7))
+        modelView.rotate(by: CC3VectorMake(self.currentRotation, self.currentRotation, self.currentRotation))
+        glUniformMatrix4fv(GLint(self.modelViewUniform), 1, 0, modelView.glMatrix)
+        
+
+        
+        //
         glViewport(0, 0, GLint(frame.size.width), GLint(frame.size.height))
         
+        //
         glVertexAttribPointer( positionSlot, 3, GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), nil )
         glVertexAttribPointer( colorSlot, 4, GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), UnsafePointer<Int>(bitPattern: MemoryLayout<GLfloat>.size * 3))
         
+        //
         glDrawElements(GLenum(GL_TRIANGLES), GLsizei(indices.size)/sizeof(indices[0]), GLenum(GL_UNSIGNED_BYTE), nil)
         
         self.context.presentRenderbuffer(Int(GL_RENDERBUFFER))

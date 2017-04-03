@@ -53,7 +53,7 @@ class ShaderHelper {
         return shaderHandle;
     }
     
-    class func compileShaders() -> (GLuint, GLuint){
+    class func compileShaders() -> (GLuint, GLuint, GLuint, GLuint){
         let vertexShader: GLuint = self .compileShader(with: "SimpleVertex", type: GLenum(GL_VERTEX_SHADER));
         let fragmentShader: GLuint = self .compileShader(with: "SimpleFragment", type: GLenum(GL_FRAGMENT_SHADER));
         
@@ -73,11 +73,15 @@ class ShaderHelper {
         }
         
         glUseProgram(programHandle)
-        let positionSlot : GLuint = GLuint( glGetAttribLocation(programHandle, "Position"))
-        let colorSlot : GLuint = GLuint( glGetAttribLocation(programHandle, "SourceColor"))
+        let positionSlot : GLuint = GLuint( glGetAttribLocation(programHandle, "Position") )
+        let colorSlot : GLuint = GLuint( glGetAttribLocation(programHandle, "SourceColor") )
+        let projectionUniform = GLuint( glGetUniformLocation(programHandle, "Projection") );
+        let modelViewUniform = GLuint( glGetUniformLocation(programHandle, "Modelview") );
+        
         glEnableVertexAttribArray(positionSlot)
         glEnableVertexAttribArray(colorSlot)
-        return (positionSlot, colorSlot)
+        
+        return (positionSlot, colorSlot, projectionUniform, modelViewUniform)
     }
 }
     

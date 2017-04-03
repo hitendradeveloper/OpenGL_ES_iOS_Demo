@@ -16,6 +16,10 @@
 		DE03AFB61E8536D8001EC72B /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFB51E8536D8001EC72B /* SimpleVertex.glsl */; };
 		DE03AFB81E8537F1001EC72B /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DE03AFB71E8537F1001EC72B /* SimpleFragment.glsl */; };
 		DE03AFBA1E853938001EC72B /* ShaderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE03AFB91E853938001EC72B /* ShaderHelper.swift */; };
+		DECD5EAC1E8B77870098D389 /* CC3Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = DECD5EA31E8B77870098D389 /* CC3Foundation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DECD5EAD1E8B77870098D389 /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = DECD5EA51E8B77870098D389 /* CC3GLMatrix.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DECD5EAE1E8B77870098D389 /* CC3Kazmath.c in Sources */ = {isa = PBXBuildFile; fileRef = DECD5EA61E8B77870098D389 /* CC3Kazmath.c */; };
+		DECD5EAF1E8B77870098D389 /* CC3Math.m in Sources */ = {isa = PBXBuildFile; fileRef = DECD5EAA1E8B77870098D389 /* CC3Math.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,17 @@
 		DE03AFB51E8536D8001EC72B /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		DE03AFB71E8537F1001EC72B /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
 		DE03AFB91E853938001EC72B /* ShaderHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShaderHelper.swift; sourceTree = "<group>"; };
+		DECD5E9D1E8B77660098D389 /* OpenGLRay-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenGLRay-Bridging-Header.h"; sourceTree = "<group>"; };
+		DECD5EA21E8B77870098D389 /* CC3Foundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Foundation.h; sourceTree = "<group>"; };
+		DECD5EA31E8B77870098D389 /* CC3Foundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Foundation.m; sourceTree = "<group>"; };
+		DECD5EA41E8B77870098D389 /* CC3GLMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3GLMatrix.h; sourceTree = "<group>"; };
+		DECD5EA51E8B77870098D389 /* CC3GLMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3GLMatrix.m; sourceTree = "<group>"; };
+		DECD5EA61E8B77870098D389 /* CC3Kazmath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CC3Kazmath.c; sourceTree = "<group>"; };
+		DECD5EA71E8B77870098D389 /* CC3Kazmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Kazmath.h; sourceTree = "<group>"; };
+		DECD5EA81E8B77870098D389 /* CC3Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Logging.h; sourceTree = "<group>"; };
+		DECD5EA91E8B77870098D389 /* CC3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Math.h; sourceTree = "<group>"; };
+		DECD5EAA1E8B77870098D389 /* CC3Math.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Math.m; sourceTree = "<group>"; };
+		DECD5EAB1E8B77870098D389 /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +87,27 @@
 				DE03AFA81E85227C001EC72B /* Assets.xcassets */,
 				DE03AFAA1E85227C001EC72B /* LaunchScreen.storyboard */,
 				DE03AFAD1E85227C001EC72B /* Info.plist */,
+				DECD5E9D1E8B77660098D389 /* OpenGLRay-Bridging-Header.h */,
+				DECD5EA11E8B77870098D389 /* Cocos3DMathLib */,
 			);
 			path = OpenGLRay;
+			sourceTree = "<group>";
+		};
+		DECD5EA11E8B77870098D389 /* Cocos3DMathLib */ = {
+			isa = PBXGroup;
+			children = (
+				DECD5EA21E8B77870098D389 /* CC3Foundation.h */,
+				DECD5EA31E8B77870098D389 /* CC3Foundation.m */,
+				DECD5EA41E8B77870098D389 /* CC3GLMatrix.h */,
+				DECD5EA51E8B77870098D389 /* CC3GLMatrix.m */,
+				DECD5EA61E8B77870098D389 /* CC3Kazmath.c */,
+				DECD5EA71E8B77870098D389 /* CC3Kazmath.h */,
+				DECD5EA81E8B77870098D389 /* CC3Logging.h */,
+				DECD5EA91E8B77870098D389 /* CC3Math.h */,
+				DECD5EAA1E8B77870098D389 /* CC3Math.m */,
+				DECD5EAB1E8B77870098D389 /* ccTypes.h */,
+			);
+			path = Cocos3DMathLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -108,6 +142,7 @@
 				TargetAttributes = {
 					DE03AF9D1E85227C001EC72B = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -150,10 +185,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DECD5EAE1E8B77870098D389 /* CC3Kazmath.c in Sources */,
 				DE03AFBA1E853938001EC72B /* ShaderHelper.swift in Sources */,
 				DE03AFA41E85227C001EC72B /* ViewController.swift in Sources */,
 				DE03AFB41E852297001EC72B /* OpenGLView.swift in Sources */,
+				DECD5EAC1E8B77870098D389 /* CC3Foundation.m in Sources */,
 				DE03AFA21E85227C001EC72B /* AppDelegate.swift in Sources */,
+				DECD5EAD1E8B77870098D389 /* CC3GLMatrix.m in Sources */,
+				DECD5EAF1E8B77870098D389 /* CC3Math.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,10 +313,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = OpenGLRay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spaceo.hitendra.OpenGLRay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/OpenGLRay/OpenGLRay-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -287,10 +329,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = OpenGLRay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spaceo.hitendra.OpenGLRay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/OpenGLRay/OpenGLRay-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
