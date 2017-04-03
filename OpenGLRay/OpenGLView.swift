@@ -29,7 +29,7 @@ struct OpenGLViewVertexConstants {
     }
 }
 
-let z: GLfloat = 0
+
 class OpenGLView: UIView {
 
     struct Vertex {
@@ -40,19 +40,48 @@ class OpenGLView: UIView {
     
     
     lazy var vertices : [Vertex] = {
-        
+        var z: GLfloat = 0.0
         let vertex1 : Vertex = Vertex(position: (1,-1,z), color: (1,0,0,1))
-        let vertex2 : Vertex = Vertex(position: (1,1,z), color: (0,1,0,1))
-        let vertex3 : Vertex = Vertex(position: (-1,1,z), color: (0,0,1,1))
-        let vertex4 : Vertex = Vertex(position: (-1,-1,z), color: (0,0,0,1))
+        let vertex2 : Vertex = Vertex(position: (1,1,z), color: (1,0,0,1))
+        let vertex3 : Vertex = Vertex(position: (-1,1,z), color: (0,1,0,1))
+        let vertex4 : Vertex = Vertex(position: (-1,-1,z), color: (0,1,0,1))
         
-        return [vertex1,vertex2,vertex3,vertex4]
+        z = -1.0;
+        let vertex5 : Vertex = Vertex(position: (1,-1,z), color: (1,0,0,1))
+        let vertex6 : Vertex = Vertex(position: (1,1,z), color: (0,1,0,1))
+        let vertex7 : Vertex = Vertex(position: (-1,1,z), color: (0,0,1,1))
+        let vertex8 : Vertex = Vertex(position: (-1,-1,z), color: (0,0,0,1))
+            
+        
+        
+        return [
+            vertex1,vertex2,vertex3,vertex4,
+            vertex5,vertex6,vertex7,vertex8
+        ]
     }()
     
     typealias Index = GLubyte
     lazy var indices : [Index] = {
-        return [0,1,2,
-                2,3,0]
+        return [
+            // Front
+            0, 1, 2,
+            2, 3, 0,
+            // Back
+            4, 6, 5,
+            4, 7, 6,
+            // Left
+            2, 7, 3,
+            7, 6, 2,
+            // Right
+            0, 4, 1,
+            4, 1, 5,
+            // Top
+            6, 2, 1, 
+            1, 6, 5,
+            // Bottom
+            0, 3, 7,
+            0, 7, 4
+        ]
     }()
     
     
@@ -71,6 +100,8 @@ class OpenGLView: UIView {
     var vertexBuffer : GLuint = 0
     var indexBuffer: GLuint = 0;
     var framerBuffer : GLuint = 0
+    var depthRenderBuffer : GLuint = 0
+
     
     func setupDisplayLink() {
         let displayLink = CADisplayLink.init(target: self, selector: #selector(OpenGLView.render(displayLink:)))
@@ -83,6 +114,7 @@ class OpenGLView: UIView {
         super.init(frame: frame);
         self.setupLayer()
         self.setupContext()
+        self.setupDepthBuffer()
         self.setupRenderBuffer()
         self.setupFrameBuffer()
         self.compileShaders()
@@ -128,15 +160,23 @@ class OpenGLView: UIView {
         self.context.renderbufferStorage(Int(GL_RENDERBUFFER), from: self.eaglLayer)
     }
     
+    //setup depth buffer
+    func setupDepthBuffer(){
+        glGenRenderbuffers(1, &self.depthRenderBuffer)
+        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), self.depthRenderBuffer)
+        glRenderbufferStorage(GLenum(GL_RENDERBUFFER), GLenum(GL_DEPTH_COMPONENT16), GLsizei(self.bounds.size.width), GLsizei(self.bounds.size.height))
+    }
+    
+    
     //setupFrameBuffer
     func setupFrameBuffer(){
-        glGenFramebuffers(1, &framerBuffer)
-        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), framerBuffer)//GL_FRAMEBUFFER is a alias of framerBuffer
+        glGenFramebuffers(1, &self.framerBuffer)
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), self.framerBuffer)//GL_FRAMEBUFFER is a alias of framerBuffer
         glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_RENDERBUFFER), self.colorRenderBuffer)
-        
+        glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_DEPTH_ATTACHMENT), GLenum(GL_RENDERBUFFER), self.depthRenderBuffer);
     }
-
     
+   
     func compileShaders(){
         let (positionSlot, colorSlot, projectionUniform, modelViewUniform) = ShaderHelper.compileShaders()
         self.positionSlot = positionSlot;
@@ -162,7 +202,8 @@ class OpenGLView: UIView {
         
         //
         glClearColor(0, 100.0/255.0, 50.0/255.0, 1.0)
-        glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
+        glClear(GLbitfield(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT))
+        glEnable(GLenum(GL_DEPTH_TEST))
         
         //
         let projection : CC3GLMatrix = CC3GLMatrix.matrix() as! CC3GLMatrix
