@@ -15,17 +15,24 @@ struct OpenGLViewVertexConstants {
         return 0
     }
     static var initialPositionOffset: Int{
-        return Int( OpenGLViewVertexConstants.initialOffset * MemoryLayout<Float>.size )
+        return Int( OpenGLViewVertexConstants.initialOffset * MemoryLayout<GLfloat>.size )
     }
     static var initialColorOffset: Int{
-        return Int( OpenGLViewVertexConstants.countPosition * MemoryLayout<Float>.size )
+        return Int( self.initialPositionOffset + (OpenGLViewVertexConstants.countPosition * MemoryLayout<GLfloat>.size) )
     }
+    static var initialTexCoordOffset: Int{
+        return Int( self.initialColorOffset + (OpenGLViewVertexConstants.countColor * MemoryLayout<GLfloat>.size) )
+    }
+    
     
     static var countPosition: Int {
         return 3
     }
     static var countColor: Int{
         return 4
+    }
+    static var countTexCoord: Int{
+        return 2
     }
 }
 
@@ -35,29 +42,65 @@ class OpenGLView: UIView {
     struct Vertex {
         var position: (GLfloat,GLfloat,GLfloat)
         var color: (GLfloat,GLfloat,GLfloat,GLfloat)
+        var texCoord: (GLfloat, GLfloat)
     }
     
     
     
     lazy var vertices : [Vertex] = {
-        var z: GLfloat = 0.0
-        let vertex1 : Vertex = Vertex(position: (1,-1,z), color: (1,0,0,1))
-        let vertex2 : Vertex = Vertex(position: (1,1,z), color: (1,0,0,1))
-        let vertex3 : Vertex = Vertex(position: (-1,1,z), color: (0,1,0,1))
-        let vertex4 : Vertex = Vertex(position: (-1,-1,z), color: (0,1,0,1))
         
-        z = -1.0;
-        let vertex5 : Vertex = Vertex(position: (1,-1,z), color: (1,0,0,1))
-        let vertex6 : Vertex = Vertex(position: (1,1,z), color: (0,1,0,1))
-        let vertex7 : Vertex = Vertex(position: (-1,1,z), color: (0,0,1,1))
-        let vertex8 : Vertex = Vertex(position: (-1,-1,z), color: (0,0,0,1))
+        let z1: GLfloat = 0.0
+        let z2: GLfloat = -2.0;
+        
+        return[
+            
+            //front 0 1 2 3
+//            Vertex(position: (1,-1,z1), color: (1,0,0,1), texCoord: (1,0)),
+//            Vertex(position: (1,1,z1), color: (1,0,0,1), texCoord: (1,1)),
+//            Vertex(position: (-1,1,z1), color: (0,1,0,1), texCoord: (0,1)),
+//            Vertex(position: (-1,-1,z1), color: (0,1,0,1), texCoord: (0,0)),
+            
+            Vertex(position: (1,-1,z1), color: (0,0,0,1), texCoord: (1,0)),
+            Vertex(position: (1,1,z1), color: (0,0,0,1), texCoord: (1,1)),
+            Vertex(position: (-1,1,z1), color: (0,0,0,1), texCoord: (0,1)),
+            Vertex(position: (-1,-1,z1), color: (0,0,0,1), texCoord: (0,0)),
+            
+            //back 4 5 6 7
+            Vertex(position: (1,-1,z2), color: (1,0,0,1), texCoord: (1,0)),
+            Vertex(position: (1,1,z2), color: (0,1,0,1), texCoord: (1,1)),
+            Vertex(position: (-1,1,z2), color: (0,0,1,1), texCoord: (0,1)),
+            Vertex(position: (-1,-1,z2), color: (0,0,0,1), texCoord: (0,0)),
+            
+            //left 8 9 10 11
+//            Vertex(position: (-1,1,z1), color: (0,1,0,1), texCoord: (1,1)),
+//            Vertex(position: (-1,-1,z1), color: (0,1,0,1), texCoord: (1,0)),
+//            Vertex(position: (-1,-1,z2), color: (0,0,0,1), texCoord: (0,0)),
+//            Vertex(position: (-1,1,z2), color: (0,0,1,1), texCoord: (0,1)),
+            Vertex(position: (-1,1,z1), color: (1,1,0,1), texCoord: (1,1)),
+            Vertex(position: (-1,-1,z1), color: (1,1,0,1), texCoord: (1,0)),
+            Vertex(position: (-1,-1,z2), color: (1,1,0,1), texCoord: (0,0)),
+            Vertex(position: (-1,1,z2), color: (1,1,0,1), texCoord: (0,1)),
+            
+            //right 12 13 14 15
+            Vertex(position: (1,-1,z1), color: (1,0,0,1), texCoord: (0,0)),
+            Vertex(position: (1,1,z1), color: (1,0,0,1), texCoord: (0,1)),
+            Vertex(position: (1,1,z2), color: (0,1,0,1), texCoord: (1,1)),
+            Vertex(position: (1,-1,z2), color: (1,0,0,1), texCoord: (1,0)),
+            
+            //top 16 17 18 19
+            Vertex(position: (1,1,z1), color: (1,0,0,1), texCoord: (1,0)),
+            Vertex(position: (-1,1,z1), color: (0,1,0,1), texCoord: (0,0)),
+            Vertex(position: (-1,1,z2), color: (0,0,1,1), texCoord: (0,1)),
+            Vertex(position: (1,1,z2), color: (0,1,0,1), texCoord: (1,1)),
+            
+            //bottom 20 21 22 23
+            Vertex(position: (1,-1,z1), color: (1,0,0,1), texCoord: (1,1)),
+            Vertex(position: (-1,-1,z1), color: (0,1,0,1), texCoord: (0,1)),
+            Vertex(position: (-1,-1,z2), color: (0,0,0,1), texCoord: (0,0)),
+            Vertex(position: (1,-1,z2), color: (1,0,0,1), texCoord: (1,0))
+        ]
             
         
-        
-        return [
-            vertex1,vertex2,vertex3,vertex4,
-            vertex5,vertex6,vertex7,vertex8
-        ]
     }()
     
     typealias Index = GLubyte
@@ -66,22 +109,27 @@ class OpenGLView: UIView {
             // Front
             0, 1, 2,
             2, 3, 0,
+            
             // Back
             4, 6, 5,
             4, 7, 6,
+            
             // Left
-            2, 7, 3,
-            7, 6, 2,
+            8,9,10,
+            8,10,11,
+            
             // Right
-            0, 4, 1,
-            4, 1, 5,
+            12,13,14,
+            12,14,15,
+            
             // Top
-            6, 2, 1, 
-            1, 6, 5,
+            16,17,18,
+            16,19,18,
+            
             // Bottom
-            0, 3, 7,
-            0, 7, 4
-        ]
+            20,21,22,
+            20,22,23,
+            ]
     }()
     
     
@@ -102,6 +150,10 @@ class OpenGLView: UIView {
     var framerBuffer : GLuint = 0
     var depthRenderBuffer : GLuint = 0
 
+    var floorTexture : GLuint = 0
+    var fishTexture : GLuint = 0
+    var texCoordSlot : GLuint = 0
+    var textureUniform : GLuint = 0
     
     func setupDisplayLink() {
         let displayLink = CADisplayLink.init(target: self, selector: #selector(OpenGLView.render(displayLink:)))
@@ -120,6 +172,10 @@ class OpenGLView: UIView {
         self.compileShaders()
         self.setupVBOs()
         self.setupDisplayLink()
+        
+        self.floorTexture = ImageHelper.loadTexture(named: "tile_floor.png");
+        self.fishTexture = ImageHelper.loadTexture(named: "item_powerup_fish.png");
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -178,11 +234,13 @@ class OpenGLView: UIView {
     
    
     func compileShaders(){
-        let (positionSlot, colorSlot, projectionUniform, modelViewUniform) = ShaderHelper.compileShaders()
+        let (positionSlot, colorSlot, projectionUniform, modelViewUniform, texCoordSlot, textureUniform) = ShaderHelper.compileShaders()
         self.positionSlot = positionSlot;
         self.colorSlot = colorSlot;
         self.projectionUniform = projectionUniform
         self.modelViewUniform = modelViewUniform;
+        self.texCoordSlot = texCoordSlot;
+        self.textureUniform = textureUniform;
     }
     
     func setupVBOs(){
@@ -212,18 +270,21 @@ class OpenGLView: UIView {
         glUniformMatrix4fv(GLint(self.projectionUniform), 1, GLboolean(GL_FALSE), projection.glMatrix)
         
         let modelView = CC3GLMatrix.matrix() as! CC3GLMatrix;
-        modelView.populate(fromTranslation: CC3VectorMake(GLfloat(sin(CACurrentMediaTime())), GLfloat(cos(CACurrentMediaTime())), -7))
-        modelView.rotate(by: CC3VectorMake(self.currentRotation, self.currentRotation, self.currentRotation))
+        modelView.populate(fromTranslation: CC3VectorMake(GLfloat(sin(CACurrentMediaTime())), 0, -7))
+        modelView.rotate(by: CC3VectorMake(self.currentRotation+90, self.currentRotation, -self.currentRotation))
         glUniformMatrix4fv(GLint(self.modelViewUniform), 1, 0, modelView.glMatrix)
         
 
-        
-        //
         glViewport(0, 0, GLint(frame.size.width), GLint(frame.size.height))
         
-        //
-        glVertexAttribPointer( positionSlot, 3, GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), nil )
-        glVertexAttribPointer( colorSlot, 4, GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), UnsafePointer<Int>(bitPattern: MemoryLayout<GLfloat>.size * 3))
+        glVertexAttribPointer( positionSlot, GLint(OpenGLViewVertexConstants.countPosition), GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), nil )
+        glVertexAttribPointer( colorSlot, GLint(OpenGLViewVertexConstants.countColor), GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), UnsafePointer<Int>(bitPattern: MemoryLayout<GLfloat>.size * 3))
+        
+        glVertexAttribPointer(self.texCoordSlot, GLint(OpenGLViewVertexConstants.countTexCoord), GLenum(GL_FLOAT), GLboolean(UInt8(GL_FALSE)), GLsizei(sizeof(vertices[0])), UnsafePointer<Int>(bitPattern: OpenGLViewVertexConstants.initialTexCoordOffset))
+        glActiveTexture(GLenum(GL_TEXTURE0))
+        glBindTexture(GLenum(GL_TEXTURE_2D), self.floorTexture)
+        glUniform1i(GLint(self.textureUniform), 0)
+        
         
         //
         glDrawElements(GLenum(GL_TRIANGLES), GLsizei(indices.size)/sizeof(indices[0]), GLenum(GL_UNSIGNED_BYTE), nil)
